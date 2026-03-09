@@ -1,12 +1,12 @@
 package com.valentine.repository;
 
-import com.valentine.model.curso;
+import com.valentine.model.Curso;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursoRepositorInMemory implements cursoRepository {
+public class CursoRepositorInMemory implements CursoRepository {
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -17,7 +17,7 @@ public class CursoRepositorInMemory implements cursoRepository {
     }
 
     @Override
-    public curso crearCurso(curso curso) throws SQLException {
+    public Curso crearCurso(Curso curso) throws SQLException {
         if (curso.getActivo() == null) {
             curso.setActivo(true);
         }
@@ -51,16 +51,16 @@ public class CursoRepositorInMemory implements cursoRepository {
         }}
 
     @Override
-    public List<curso> listarPorEstado(boolean estado) throws SQLException {
+    public List<Curso> listarPorEstado(boolean estado) throws SQLException {
         String sql = "SELECT * FROM curso WHERE activo = ?";
-        List<curso> lista = new ArrayList<>();
+        List<Curso> lista = new ArrayList<>();
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setBoolean(1, estado);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                curso c = new curso(rs.getInt("id"),
-                        rs.getBoolean("activ"),
+                Curso c = new Curso(rs.getInt("id"),
+                        rs.getBoolean("active"),
                         rs.getString("name")
                 );
                 lista.add(c);
@@ -68,21 +68,21 @@ public class CursoRepositorInMemory implements cursoRepository {
         return lista;
     }
     @Override
-    public List<curso> listarOrdenadoPor(String campo, String tipo) throws SQLException {
+    public List<Curso> listarOrdenadoPor(String campo, String tipo) throws SQLException {
         if (!campo.equals("id") && !campo.equals("boolean") && !campo.equals("name")) ;
         if (!tipo.equalsIgnoreCase("ASC") &&
                 !tipo.equalsIgnoreCase("DESC")) {
             throw new IllegalArgumentException("invalid type");
         }
         String sql = "SELECT * FROM curso ORDER BY " + campo + tipo;
-        List<curso> lista = new ArrayList<>();
+        List<Curso> lista = new ArrayList<>();
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                lista.add(new curso(rs.getInt("id"), rs.getBoolean("Active"), rs.getString("Name")));
+            while (rs.next()) { // id, active, name
+                lista.add(new Curso(rs.getInt("id"), rs.getBoolean("active"), rs.getString("name")));
             }
-            return lista;
         }
+        return lista;
     }
 }

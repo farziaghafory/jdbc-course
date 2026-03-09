@@ -1,21 +1,21 @@
 package com.valentine;
 
-import com.valentine.model.curso;
+import com.valentine.model.Curso;
 import com.valentine.repository.CursoRepositorInMemory;
-import com.valentine.repository.cursoRepository;
+import com.valentine.repository.CursoRepository;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        cursoRepository repo = new CursoRepositorInMemory();
-        curso c1 = repo.crearCurso(new curso(null, null, "Mattematics"));
-        curso c2 = repo.crearCurso(new curso(null, false, "History"));
-        curso c3 = repo.crearCurso(new curso(null, true, "Programming"));
+        CursoRepository repo = new CursoRepositorInMemory();
+        Curso c1 = repo.crearCurso(new Curso(null, null, "Mattematics"));
+        Curso c2 = repo.crearCurso(new Curso(null, false, "History"));
+        Curso c3 = repo.crearCurso(new Curso(null, true, "Programming"));
         repo.activar(c2.getId());
         System.out.println(" ACTIVES");
-        List<curso> activos = repo.listarPorEstado(true);
+        List<Curso> activos = repo.listarPorEstado(true);
         activos.forEach(c -> System.out.println(c.getId() + c.getNombre() + c.getActivo())
         );
         System.out.println(" Ordened por name of the DESC");

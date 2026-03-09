@@ -1,12 +1,12 @@
 package com.valentine.model;
 
-public class curso {
+public class Curso {
 
     private Integer id;
     private Boolean activo;
     private String nombre;
 
-    public curso(Integer id, Boolean activo, String nombre) {
+    public Curso(Integer id, Boolean activo, String nombre) {
         this.id = id;
         this.activo = activo;
         this.nombre = nombre;
